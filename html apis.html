@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML APIs</title>
+    <style>
+        #loc{color: aquamarine; background-color: black;}
+    </style>
+</head>
+<body>
+    <main>
+        <section id="loc"></section>
+        <button onclick="loaddata()">Load Data</button>
+        <section id="data"></section>
+    </main>
+    <script>
+        disp= document.querySelector("#loc");
+        let showLocation = (position) =>{
+            disp.innerHTML = 'Latitude:' + position.coords.latitude + '<br> Longitude:' + position.coords.longitude;
+        }
+        navigator.geolocation.getCurrentPosition(showLocation);     
+
+
+    </script>
+    <script>
+         let holder = document.querySelector('#data');
+         btn = document.querySelector('button');
+        let loaddata = () =>{
+        fetch('https://samizzodjangorestapi.herokuapp.com/article/').then(response=>response.json()).then(data=(articles)=>{
+                articles.forEach(element => {
+                holder.innerHTML += element.id + '. ' + element.title + ' '+ element.author + '<br>'
+                btn.innerHTML = 'Clear data';
+                btn.setAttribute("onclick",'cleardata()');
+            
+            });
+                       
+        });
+        
+        };
+        let cleardata =()=>{               
+                holder.innerHTML = "";
+                btn.innerHTML = 'Load data'
+                btn.setAttribute("onclick",'loaddata()');
+        };
+        
+        
+    </script>
+</body>
+</html>
